@@ -91,5 +91,9 @@ jobs:
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{env._GITHUB_PAT}}
       with:
-        files: zrbin2sql
+        files: |
+          zrbin2sql.exe
+          zrbin2sql
