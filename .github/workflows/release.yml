@@ -56,13 +56,13 @@ jobs:
 
       - name: Build executable with PyInstaller
         run: |
-          pyinstaller --onefile --noconsole zrbin2log.py
+          pyinstaller --onefile --noconsole zrbin2sql.py
 
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
           name: LinuxExecutable
-          path: dist/zrbin2log
+          path: dist/zrbin2sql
 
   release:
     name: Create GitHub Release
