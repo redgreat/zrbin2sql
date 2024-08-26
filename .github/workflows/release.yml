@@ -101,8 +101,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: |
-          zrbin2sql.exe
+        asset_path: .
+        asset_name: |
           zrbin2sql
-        asset_name: zrbin2sql
+          zrbin2sql.exe
         asset_content_type: application/octet-stream
