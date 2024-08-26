@@ -75,24 +75,21 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: WindowsExecutable
-        path: dist
 
     - name: Download Linux artifact
       uses: actions/download-artifact@v4
       with:
         name: LinuxExecutable
-        path: dist
 
-#    - name: Display structure of downloaded files
-#      run: ls -R
+    - name: Display structure of downloaded files
+      run: ls -R
 
     - name: Make Linux executable
-      run: chmod +x dist/zrbin2sql
+      run: chmod +x zrbin2sql
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          dist/zrbin2sql.exe
-          dist/zrbin2sql
-        draft: true
+          zrbin2sql.exe
+          zrbin2sql
