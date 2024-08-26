@@ -82,6 +82,8 @@ jobs:
       with:
         name: LinuxExecutable
         path: dist
+
+    - name: Display structure of downloaded files
       run: ls -R
 
 #    - name: Make Linux executable
