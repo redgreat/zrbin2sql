@@ -83,17 +83,26 @@ jobs:
         name: LinuxExecutable
         merge-multiple: true
 
-    - name: Display structure of downloaded files
-      run: ls -R
-
-    - name: Make Linux executable
-      run: chmod +x zrbin2sql
-
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
+    - name: create release
+      id: create-release
+      uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{env._GITHUB_PAT}}
+        GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
       with:
-        files: |
+        tag_name: ${{ github.ref_name }}
+        release_name: zrbin2sql
+        draft: false
+        prerelease: false
+
+    - name: upload release asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
+        asset_path: |
           zrbin2sql.exe
           zrbin2sql
+        asset_name: zrbin2sql
+        asset_content_type: application/octet-stream
