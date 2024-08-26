@@ -81,8 +81,8 @@ jobs:
       with:
         name: LinuxExecutable
 
-    - name: Make Linux executable
-      run: chmod +x LinuxExecutable/zrbin2sql
+#    - name: Make Linux executable
+#      run: chmod +x LinuxExecutable/zrbin2sql
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
