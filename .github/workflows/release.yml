@@ -23,6 +23,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pyinstaller
+        python -m pip install -r requirements.txt
 
     - name: Build executable with PyInstaller
       run: |
@@ -50,10 +51,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt
 
     - name: Build executable with PyInstaller
       run: |
-        pyinstaller --onefile zrbin2log.py
+        pyinstaller --onefile --noconsole zrbin2log.py
 
     - name: Upload Linux artifact
       uses: actions/upload-artifact@v4

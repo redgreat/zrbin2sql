@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "binlog2sql"
+version = "0.1.0"
+description = "中瑞数据库flashbak专用工具"
+authors = ["wongcw <rubygreat@msn.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pytz = "^2024.1"
+pymysql = "^1.1.1"
+mysql-replication = "^1.0.9"
+tqdm = "^4.66.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
