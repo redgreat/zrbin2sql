@@ -83,16 +83,16 @@ jobs:
         name: LinuxExecutable
         path: dist
 
-    - name: Display structure of downloaded files
-      run: ls -R
+#    - name: Display structure of downloaded files
+#      run: ls -R
 
-#    - name: Make Linux executable
-#      run: chmod +x LinuxExecutable/zrbin2sql
+    - name: Make Linux executable
+      run: chmod +x dist/zrbin2sql
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          WindowsExecutable/zrbin2sql.exe
-          LinuxExecutable/zrbin2sql
+          dist/zrbin2sql.exe
+          dist/zrbin2sql
         draft: true
