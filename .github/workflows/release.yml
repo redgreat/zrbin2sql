@@ -58,6 +58,6 @@ jobs:
         make_latest: true
         files: | 
           ./zrbin2sql/zrbin2sql-macos-latest/zrbin2sql-macos-latest
-          ./zrbin2sql/zrbin2sql-ubuntu-latest
-          ./zrbin2sql/zrbin2sql-windows-latest
+          ./zrbin2sql/zrbin2sql-ubuntu-latest/zrbin2sql-ubuntu-latest
+          ./zrbin2sql/zrbin2sql-windows-latest/zrbin2sql-windows-latest.exe
           
