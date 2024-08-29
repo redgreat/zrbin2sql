@@ -31,11 +31,13 @@ jobs:
       run: |
         pyinstaller --onefile --noconsole -n zrbin2sql-${{ matrix.runs-on }} zrbin2sql.py 
 
+    - run: ls -R
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: zrbin2sql-${{ matrix.runs-on }}
-        path: zrbin2sql-${{ matrix.runs-on }}
+        path: zrbin2sql/dist
 
   release:
     name: Create GitHub Release
