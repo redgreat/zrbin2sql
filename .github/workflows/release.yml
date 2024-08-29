@@ -57,6 +57,7 @@ jobs:
       with:
         repository: redgreat/zrbin2sql
         make_latest: true
+        token: ${{ secrets.PUBLISH_TOKEN }}
         files: | 
           ./zrbin2sql/zrbin2sql-macos-latest/zrbin2sql-macos-latest
           ./zrbin2sql/zrbin2sql-ubuntu-latest/zrbin2sql-ubuntu-latest
