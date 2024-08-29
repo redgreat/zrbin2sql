@@ -55,8 +55,5 @@ jobs:
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: |
-          zrbin2sql-macos-latest
-          zrbin2sql-macos-latest.app
-          zrbin2sql-ubuntu-latest
-          zrbin2sql-windows-latest.exe
+        make_latest: true
+        files: zrbin2sql
