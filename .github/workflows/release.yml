@@ -35,7 +35,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: zrbin2sql-${{ matrix.runs-on }}
-        path: file-${{ matrix.runs-on }}
+        path: zrbin2sql-${{ matrix.runs-on }}
 
   release:
     name: Create GitHub Release
