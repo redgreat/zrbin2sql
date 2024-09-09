@@ -194,19 +194,22 @@ def process_binlogevent(binlogevent, start_time, end_time):
                     try:
                         rollback_replace_set_without_null_values = []
                         fields_clause = []
-                        for k, v in convert_bytes_to_str(row["before_values"]).values():
+                        bv = convert_bytes_to_str(row["before_values"])
+                        av = convert_bytes_to_str(row["after_values"])
+                        for key in bv:
+                            v = bv[key]
                             if v is None:
-                                av = after_values[k]
-                                if av is not None:
-                                    if isinstance(av, (str, datetime.datetime, datetime.date)):
-                                        rollback_replace_set_without_null_values.append(f"'{av}'")
+                                akv = av[key]
+                                if akv is not None:
+                                    if isinstance(akv, (str, datetime.datetime, datetime.date)):
+                                        rollback_replace_set_without_null_values.append(f"'{akv}'")
                                         fields_clause.append(k)
-                                    elif isinstance(av, (dict, list)):
-                                        av = json.dumps(v, ensure_ascii=False)
-                                        rollback_replace_set_without_null_values.append(f"'{av}'")
+                                    elif isinstance(akv, (dict, list)):
+                                        akv = json.dumps(v, ensure_ascii=False)
+                                        rollback_replace_set_without_null_values.append(f"'{akv}'")
                                         fields_clause.append(k)
                                     else:
-                                        rollback_replace_set_without_null_values.append(str(av))
+                                        rollback_replace_set_without_null_values.append(str(akv))
                                         fields_clause.append(k)
                             elif isinstance(v, (str, datetime.datetime, datetime.date)):
                                 rollback_replace_set_without_null_values.append(f"'{v}'")
