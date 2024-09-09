@@ -203,24 +203,24 @@ def process_binlogevent(binlogevent, start_time, end_time):
                                 if akv is not None:
                                     if isinstance(akv, (str, datetime.datetime, datetime.date)):
                                         rollback_replace_set_without_null_values.append(f"'{akv}'")
-                                        fields_clause.append(k)
+                                        fields_clause.append(key)
                                     elif isinstance(akv, (dict, list)):
                                         akv = json.dumps(v, ensure_ascii=False)
                                         rollback_replace_set_without_null_values.append(f"'{akv}'")
-                                        fields_clause.append(k)
+                                        fields_clause.append(key)
                                     else:
                                         rollback_replace_set_without_null_values.append(str(akv))
-                                        fields_clause.append(k)
+                                        fields_clause.append(key)
                             elif isinstance(v, (str, datetime.datetime, datetime.date)):
                                 rollback_replace_set_without_null_values.append(f"'{v}'")
-                                fields_clause.append(k)
+                                fields_clause.append(key)
                             elif isinstance(v, (dict, list)):
                                 v = json.dumps(v, ensure_ascii=False)
                                 rollback_replace_set_without_null_values.append(f"'{v}'")
-                                fields_clause.append(k)
+                                fields_clause.append(key)
                             else:
                                 rollback_replace_set_without_null_values.append(str(v))
-                                fields_clause.append(k)
+                                fields_clause.append(key)
                         rollback_replace_set_without_null_clause = ','.join(rollback_replace_set_without_null_values)
                         rollback_replace_without_null_sql = (f"REPLACE INTO `{database_name}`.`{binlogevent.table}` "
                                                              f"({fields_clause}) "
