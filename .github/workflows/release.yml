@@ -49,7 +49,6 @@ jobs:
       with:
         path: zrbin2sql
         pattern: zrbin2sql-*
-    - run: ls -R
 
     - name: Release
       uses: softprops/action-gh-release@v2

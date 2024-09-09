@@ -193,23 +193,34 @@ def process_binlogevent(binlogevent, start_time, end_time):
 
                     try:
                         rollback_replace_set_without_null_values = []
-                        for v in convert_bytes_to_str(row["before_values"]).values():
+                        fields_clause = []
+                        for k, v in convert_bytes_to_str(row["before_values"]).values():
                             if v is None:
-                                rollback_replace_set_without_null_values.append("NULL")
+                                av = after_values[k]
+                                if av is not None:
+                                    if isinstance(av, (str, datetime.datetime, datetime.date)):
+                                        rollback_replace_set_without_null_values.append(f"'{av}'")
+                                        fields_clause.append(k)
+                                    elif isinstance(av, (dict, list)):
+                                        av = json.dumps(v, ensure_ascii=False)
+                                        rollback_replace_set_without_null_values.append(f"'{av}'")
+                                        fields_clause.append(k)
+                                    else:
+                                        rollback_replace_set_without_null_values.append(str(av))
+                                        fields_clause.append(k)
                             elif isinstance(v, (str, datetime.datetime, datetime.date)):
                                 rollback_replace_set_without_null_values.append(f"'{v}'")
+                                fields_clause.append(k)
                             elif isinstance(v, (dict, list)):
                                 v = json.dumps(v, ensure_ascii=False)
                                 rollback_replace_set_without_null_values.append(f"'{v}'")
+                                fields_clause.append(k)
                             else:
                                 rollback_replace_set_without_null_values.append(str(v))
-                        rollback_replace_set_without_null_fields = []
-                        for k, v in before_values.items():
-                            if v is not None:
-                                rollback_replace_set_without_null_fields.append(f"'{k}'")
+                                fields_clause.append(k)
                         rollback_replace_set_without_null_clause = ','.join(rollback_replace_set_without_null_values)
                         rollback_replace_without_null_sql = (f"REPLACE INTO `{database_name}`.`{binlogevent.table}` "
-                                                             f"({rollback_replace_set_without_null_fields}) "
+                                                             f"({fields_clause}) "
                                                              f"VALUES ({rollback_replace_set_without_null_clause});")
                     except Exception as e:
                         print("出现异常错误：", e)
@@ -277,7 +288,7 @@ def main(only_tables=None, only_operation=None, mysql_host=None, mysql_port=None
     start_time = int(time.mktime(time.strptime(st, '%Y-%m-%d %H:%M:%S')))
     end_time = int(time.mktime(time.strptime(et, '%Y-%m-%d %H:%M:%S')))
 
-    interval = (end_time - start_time) // max_workers  # 将时间范围划分为 10 等份
+    interval = (end_time - start_time) // max_workers
     executor = ThreadPoolExecutor(max_workers=max_workers)
 
     stream = BinLogStreamReader(
@@ -301,7 +312,6 @@ def main(only_tables=None, only_operation=None, mysql_host=None, mysql_port=None
         task_start_time = start_time + i * interval
         task_end_time = task_start_time + interval
         if i == (max_workers - 1):
-            # task_end_time = end_time - (max_workers-1) * interval
             task_end_time = end_time
 
         tasks = []
@@ -315,10 +325,9 @@ def main(only_tables=None, only_operation=None, mysql_host=None, mysql_port=None
             event_count += 1  # 每迭代一次，计数器加一
             # 更新进度条
             progress_bar.update(1)
-            #for binlogevent in tqdm(stream, desc='Processing binlogevents', unit='event'):
-            if binlogevent.timestamp < task_start_time:  # 如果事件的时间小于任务的起始时间，则继续迭代下一个事件
+            if binlogevent.timestamp < task_start_time:
                 continue
-            elif binlogevent.timestamp > task_end_time:  # 如果事件的时间大于任务的结束时间，则结束该任务的迭代
+            elif binlogevent.timestamp > task_end_time:
                 break
             task = executor.submit(process_binlogevent, binlogevent, task_start_time, task_end_time)
 
